@@ -389,5 +389,3 @@ MonoBehaviour:
   _sceneHistory:
   - name: GamePlay
     path: Assets/_GAME/Scenes/GamePlay.unity
-  - name: SampleScene
-    path: Assets/_GAME/Scenes/SampleScene.unity

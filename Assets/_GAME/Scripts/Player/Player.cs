@@ -11,11 +11,11 @@ public class Player : Character
     public override void Start()
     {
         base.Start();
-        ChangeAnimation("idle");
     }
 
-    void Update()
+    public override void Update()
     {
+        base.Update();
         float h = joystick.GetHorizontalAxis();
         float v = joystick.GetVerticalAxis();
 
