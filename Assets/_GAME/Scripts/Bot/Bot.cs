@@ -30,78 +30,92 @@ public class Bot : Character
     #region Idle State
     public void OnEnterIdleState()
     {
-        print("Enter Idle");
         ChangeAnimation("idle");
-
-        Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
-        randomDirection += transform.position;
-        NavMeshHit navHit;
-        if (NavMesh.SamplePosition(randomDirection, out navHit, maxDistance, NavMesh.AllAreas))
-        {
-            target = navHit.position;
-        }
-
         StartCoroutine(ChangeMoveStateAfterDelay(3f));
     }
+
     public void OnExecuteIdleState()
     {
-        print("Execute Idle");
-        if (!IsCharacterInAttackRange()) return;
-
-        stateMachine.ChangeState(AttackState.Instance);
+        if (IsCharacterInAttackRange())
+        {
+            stateMachine.ChangeState(AttackState.Instance);
+        }
     }
+
     public void OnExitIdleState()
     {
-        print("Exit Idle");
     }
 
     private IEnumerator ChangeMoveStateAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        stateMachine.ChangeState(MoveState.Instance);
+
+        if (!IsCharacterInAttackRange())
+        {
+            Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
+            randomDirection += transform.position;
+            NavMeshHit navHit;
+            if (NavMesh.SamplePosition(randomDirection, out navHit, maxDistance, NavMesh.AllAreas))
+            {
+                target = navHit.position;
+            }
+            stateMachine.ChangeState(MoveState.Instance);
+        }
     }
     #endregion
 
     #region Move State
     public void OnEnterMoveState()
     {
-        print("Enter Move");
         ChangeAnimation("run");
     }
+
     public void OnExecuteMoveState()
     {
-        print("Execute Move");
-        if (Vector3.Distance(this.transform.position, target) > 0.1f)
-        {
-            navMeshAgent.SetDestination(target);
-        }
-        else
+        if (IsCharacterInAttackRange())
         {
             stateMachine.ChangeState(IdleState.Instance);
         }
-
+        else
+        {
+            if (Vector3.Distance(this.transform.position, target) > 0.1f)
+            {
+                navMeshAgent.SetDestination(target);
+            }
+            else
+            {
+                stateMachine.ChangeState(IdleState.Instance);
+            }
+        }
     }
+
     public void OnExitMoveState()
     {
-        print("Exit Move");
     }
     #endregion
 
     #region Attack State
     public void OnEnterAttackState()
     {
-        print("Enter Attack");
+        ChangeAnimation("attack");
+        Attack();
     }
+
     public void OnExecuteAttackState()
     {
-        print("Execute Attack");
+        if (!IsCharacterInAttackRange())
+        {
+            stateMachine.ChangeState(IdleState.Instance);
+        }
+        else
+        {
+            Attack();
+        }
     }
+
     public void OnExitAttackState()
     {
-        print("Exit Attack");
     }
     #endregion
     #endregion
-
-
 }

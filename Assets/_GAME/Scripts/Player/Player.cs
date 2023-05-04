@@ -38,6 +38,7 @@ public class Player : Character
         _rb.velocity = Vector3.zero;
         transform.rotation = transform.rotation;
         ChangeAnimation("idle");
+        Attack();
     }
 
     private void Movement()
