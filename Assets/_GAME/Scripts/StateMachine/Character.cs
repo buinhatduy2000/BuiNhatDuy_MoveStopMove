@@ -6,17 +6,36 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     [Header("Weapons")]
-    [SerializeField] protected GameObject weaponPrefabs;
-    [SerializeField] protected Transform shootPoint;
-    [SerializeField] protected float attackCooldown = 1.0f;
+    [SerializeField]
+    protected Weapon_1 weaponPrefabs;
+
+    [SerializeField]
+    protected Transform shootPoint;
+
+    [SerializeField]
+    protected float attackCooldown = 1.0f;
+
     [Header("Character properties")]
-    [SerializeField] protected float characterMoveSpeed;
-    [SerializeField] protected float attackRange;
-    [SerializeField] protected Animator anim;
-    [SerializeField] private string currentAnim;
-    [SerializeField] protected Rigidbody _rb;
-    [SerializeField] private LineRenderer rangeCircle;
-    [SerializeField] private LayerMask characterLayer;
+    [SerializeField]
+    protected float characterMoveSpeed;
+
+    [SerializeField]
+    protected float attackRange;
+
+    [SerializeField]
+    protected Animator anim;
+
+    [SerializeField]
+    private string currentAnim;
+
+    [SerializeField]
+    protected Rigidbody _rb;
+
+    [SerializeField]
+    private LineRenderer rangeCircle;
+
+    [SerializeField]
+    private LayerMask characterLayer;
 
     private float timeUntilNextAttack;
 
@@ -31,11 +50,18 @@ public class Character : MonoBehaviour
         if (timeUntilNextAttack > 0)
             timeUntilNextAttack -= Time.deltaTime;
     }
+
     protected bool IsCharacterInAttackRange()
     {
-        Collider[] collidersInRange = Physics.OverlapSphere(transform.position, attackRange, characterLayer);
+        Collider[] collidersInRange = Physics.OverlapSphere(
+            transform.position,
+            attackRange,
+            characterLayer
+        );
 
-        return collidersInRange.Any(collider => collider.CompareTag("Enemy") && collider.gameObject != this.gameObject);
+        return collidersInRange.Any(
+            collider => collider.CompareTag("Enemy") && collider.gameObject != this.gameObject
+        );
     }
 
     #region Draw Attack Range
@@ -57,6 +83,7 @@ public class Character : MonoBehaviour
             }
         }
     }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -79,9 +106,14 @@ public class Character : MonoBehaviour
     #region Character Attack
     protected void Attack()
     {
-        if (timeUntilNextAttack > 0) return;
+        if (timeUntilNextAttack > 0)
+            return;
 
-        Collider[] collidersInRange = Physics.OverlapSphere(transform.position, attackRange, characterLayer);
+        Collider[] collidersInRange = Physics.OverlapSphere(
+            transform.position,
+            attackRange,
+            characterLayer
+        );
         Collider nearestEnemy = null;
         float minDistance = float.MaxValue;
 
@@ -100,15 +132,24 @@ public class Character : MonoBehaviour
 
         if (nearestEnemy != null)
         {
-            Vector3 targetDirection = (nearestEnemy.transform.position - transform.position).normalized;
+            Vector3 targetDirection = (
+                nearestEnemy.transform.position - transform.position
+            ).normalized;
             float step = characterMoveSpeed * Time.deltaTime;
-            Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, step, 0.0f);
+            Vector3 newDirection = Vector3.RotateTowards(
+                transform.forward,
+                targetDirection,
+                step,
+                0.0f
+            );
             transform.rotation = Quaternion.LookRotation(newDirection);
 
             if (Vector3.Angle(transform.forward, targetDirection) <= 1.0f)
             {
-                GameObject bullet = Instantiate(weaponPrefabs, shootPoint.position, transform.rotation);
-                bullet.GetComponent<BaseWeapon>().father = this.gameObject;
+                //GameObject bullet = Instantiate(weaponPrefabs, shootPoint.position, transform.rotation);
+
+                SimplePool.Spawn<Weapon_1>(  PoolType.Bullet_1, shootPoint.position, transform.rotation);
+                //bullet.father = this.gameObject;
                 timeUntilNextAttack = attackCooldown;
             }
         }

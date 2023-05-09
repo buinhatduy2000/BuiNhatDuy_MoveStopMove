@@ -5,9 +5,14 @@ using UnityEngine.AI;
 
 public class Bot : Character
 {
-    [SerializeField] private NavMeshAgent navMeshAgent;
-    [SerializeField] private Vector3 target;
-    [SerializeField] private float maxDistance = 20f;
+    [SerializeField]
+    private NavMeshAgent navMeshAgent;
+
+    [SerializeField]
+    private Vector3 target;
+
+    [SerializeField]
+    private float maxDistance = 20f;
 
     private StateMachine<Bot> stateMachine;
 
@@ -42,9 +47,7 @@ public class Bot : Character
         }
     }
 
-    public void OnExitIdleState()
-    {
-    }
+    public void OnExitIdleState() { }
 
     private IEnumerator ChangeMoveStateAfterDelay(float delay)
     {
@@ -89,15 +92,12 @@ public class Bot : Character
         }
     }
 
-    public void OnExitMoveState()
-    {
-    }
+    public void OnExitMoveState() { }
     #endregion
 
     #region Attack State
     public void OnEnterAttackState()
     {
-        ChangeAnimation("attack");
         Attack();
     }
 
@@ -113,9 +113,7 @@ public class Bot : Character
         }
     }
 
-    public void OnExitAttackState()
-    {
-    }
+    public void OnExitAttackState() { }
     #endregion
     #endregion
 }

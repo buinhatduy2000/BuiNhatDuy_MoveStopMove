@@ -387,5 +387,7 @@ MonoBehaviour:
     alignWindowToBar: 1
     windowMode: 0
   _sceneHistory:
+  - name: Sample Pooling Scene
+    path: Assets/_Pool/Scenes/Sample Pooling Scene.unity
   - name: GamePlay
     path: Assets/_GAME/Scenes/GamePlay.unity

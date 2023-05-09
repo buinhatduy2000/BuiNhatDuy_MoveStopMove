@@ -5,8 +5,11 @@ using UnityEngine;
 public class Player : Character
 {
     [Header("===---Move Properties---===")]
-    [SerializeField] private Vector3 InputVector;
-    [SerializeField] private UltimateJoystick joystick;
+    [SerializeField]
+    private Vector3 InputVector;
+
+    [SerializeField]
+    private UltimateJoystick joystick;
 
     public override void Start()
     {
@@ -50,6 +53,10 @@ public class Player : Character
     private void Rotate()
     {
         Quaternion toRotate = Quaternion.LookRotation(InputVector, Vector3.up);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotate, characterMoveSpeed);
+        transform.rotation = Quaternion.RotateTowards(
+            transform.rotation,
+            toRotate,
+            characterMoveSpeed
+        );
     }
 }

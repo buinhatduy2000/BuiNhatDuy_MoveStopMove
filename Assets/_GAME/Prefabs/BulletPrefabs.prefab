@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1739720156146693083}
   - component: {fileID: 886570408282363361}
   - component: {fileID: 6459076747325066620}
-  - component: {fileID: -170942053791726978}
+  - component: {fileID: 6390053692015861127}
   m_Layer: 0
   m_Name: BulletPrefabs
   m_TagString: Untagged
@@ -115,7 +115,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-170942053791726978
+--- !u!114 &6390053692015861127
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,9 +124,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5207316085283612751}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 526f3e593e5834d42b3093dd4766ec7a, type: 3}
+  m_Script: {fileID: 11500000, guid: a4bf5b035ba8e8745b9b3933dce4014d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poolType: 1
   _rb: {fileID: 6459076747325066620}
-  bulletSpeed: 20
+  bulletSpeed: 5
   father: {fileID: 0}
