@@ -21005,7 +21005,7 @@ MonoBehaviour:
   shootPoint: {fileID: 1868856189}
   attackCooldown: 5
   characterMoveSpeed: 7
-  attackRange: 7
+  attackRange: 7.25
   anim: {fileID: 1240085070}
   currentAnim: 
   _rb: {fileID: 1570940692}

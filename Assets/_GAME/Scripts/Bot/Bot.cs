@@ -7,13 +7,45 @@ public class Bot : Character
 {
     [SerializeField]
     private NavMeshAgent navMeshAgent;
+    public NavMeshAgent NavMeshAgent
+    {
+        get => navMeshAgent;
+    }
 
     [SerializeField]
     private Vector3 target;
 
+    [HideInInspector]
+    public Vector3 Target
+    {
+        get => target;
+        set => target = value;
+    }
+
     [SerializeField]
     private float maxDistance = 20f;
 
+    [HideInInspector]
+    public float MaxDistance
+    {
+        get => maxDistance;
+        set => maxDistance = value;
+    }
+
+    private Transform tf;
+    public Transform m_Tranform
+    {
+        get
+        {
+            if (tf == null)
+            {
+                tf = transform;
+            }
+            return tf;
+        }
+    }
+
+    /*
     private StateMachine<Bot> stateMachine;
 
     public override void Start()
@@ -116,4 +148,5 @@ public class Bot : Character
     public void OnExitAttackState() { }
     #endregion
     #endregion
+    */
 }

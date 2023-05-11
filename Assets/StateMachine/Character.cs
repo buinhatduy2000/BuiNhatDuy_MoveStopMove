@@ -39,9 +39,12 @@ public class Character : MonoBehaviour
 
     private float timeUntilNextAttack;
 
+    private IState<Character> currentState;
+
     public virtual void Start()
     {
         ChangeAnimation("idle");
+        ChangeState(new IdleState());
         UpdateRangeCircle();
     }
 
@@ -49,9 +52,14 @@ public class Character : MonoBehaviour
     {
         if (timeUntilNextAttack > 0)
             timeUntilNextAttack -= Time.deltaTime;
+
+        if (currentState != null)
+        {
+            currentState.OnExecute(this);
+        }
     }
 
-    protected bool IsCharacterInAttackRange()
+    public bool IsCharacterInAttackRange()
     {
         Collider[] collidersInRange = Physics.OverlapSphere(
             transform.position,
@@ -92,7 +100,7 @@ public class Character : MonoBehaviour
     #endregion
 
     #region Animator function
-    protected void ChangeAnimation(string animName)
+    public void ChangeAnimation(string animName)
     {
         if (currentAnim != animName)
         {
@@ -104,7 +112,7 @@ public class Character : MonoBehaviour
     #endregion
 
     #region Character Attack
-    protected void Attack()
+    public void Attack()
     {
         if (timeUntilNextAttack > 0)
             return;
@@ -148,11 +156,30 @@ public class Character : MonoBehaviour
             {
                 //GameObject bullet = Instantiate(weaponPrefabs, shootPoint.position, transform.rotation);
 
-                SimplePool.Spawn<Weapon_1>(  PoolType.Bullet_1, shootPoint.position, transform.rotation);
+                SimplePool.Spawn<Weapon_1>(
+                    PoolType.Bullet_1,
+                    shootPoint.position,
+                    transform.rotation
+                );
                 //bullet.father = this.gameObject;
                 timeUntilNextAttack = attackCooldown;
             }
         }
     }
     #endregion
+
+    public void ChangeState(IState<Character> state)
+    {
+        if (currentState != null)
+        {
+            currentState.OnExit(this);
+        }
+
+        currentState = state;
+
+        if (currentState != null)
+        {
+            currentState.OnEnter(this);
+        }
+    }
 }
